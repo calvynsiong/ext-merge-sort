@@ -1,3 +1,7 @@
+import os
+import shutil
+
+
 def sorting_selection(input_list, filehandler = None):
     for idx in range(len(input_list)):
         min_idx = idx
@@ -17,6 +21,10 @@ def splitFiles(data, size):
     pos = 0
     tempBuffer = []
     filename_list = []
+    if os.path.exists('./tmp/'):
+        shutil.rmtree('./tmp/')
+    os.mkdir('./tmp/')
+
     for i in range(1,len(data)+1):
         tempBuffer.append(int(data[i-1]))
         if i % size == 0:
@@ -25,21 +33,22 @@ def splitFiles(data, size):
             for i in range(len(tempBuffer)):
                 tempBuffer[i] = str(tempBuffer[i])
                 tempBuffer[i] = tempBuffer[i]+'\n'
-            filename = "tempFile" + str(pos) 
+            filename = "./tmp/tempFile" + str(pos) 
             f = open(filename, "w+")
             f.writelines(tempBuffer)
             filename_list.append(filename)
+            f.close() 
             tempBuffer = []
     
     return filename_list
 
-def handleFile(namafile):
-    f = open(namafile, "r+")
+def handleFile(namefile):
+    f = open(namefile, "r+")
     data = f.readlines()
     data.pop(0)
     f.close()
     
-    f = open(namafile, "w+")
+    f = open(namefile, "w+")
     f.writelines(data)
     f.close() 
 
